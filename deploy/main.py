@@ -6,11 +6,11 @@ from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
-
+from fastapi import FastAPI
 import gradio as gr
 
 load_dotenv()
-
+app = FastAPI()
 books = pd.read_csv("books_with_emotions.csv")
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
@@ -101,6 +101,6 @@ with gr.Blocks(theme = gr.themes.Glass()) as dashboard:
                         inputs = [user_query, category_dropdown, tone_dropdown],
                         outputs = output)
 
-
-if __name__ == "__main__":
-    dashboard.launch()
+#app = gr.mount_gradio_app(app, dashboard,path="/")
+if __name__ == "__main__": 
+    dashboard.launch() ##local deployment
